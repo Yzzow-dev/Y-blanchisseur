@@ -1,0 +1,46 @@
+{
+  "name": "discord-rp-bot",
+  "version": "1.0.0",
+  "description": "Bot Discord avancé pour serveur RP avec système de tickets, candidatures, auto-modération et dashboard web",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "jest",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "deploy": "node scripts/deploy.js",
+    "deploy:guild": "node scripts/deploy.js --guild",
+    "deploy:delete": "node scripts/deploy.js --delete",
+    "deploy:list": "node scripts/deploy.js --list"
+  },
+  "keywords": ["discord", "bot", "roleplay", "tickets", "moderation"],
+  "author": "Discord RP Bot",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "mongoose": "^8.0.3",
+    "dotenv": "^16.3.1",
+    "node-cron": "^3.0.3",
+    "chalk": "^4.1.2",
+    "winston": "^3.11.0",
+    "express": "^4.18.2",
+    "passport": "^0.7.0",
+    "passport-discord": "^0.1.4",
+    "express-session": "^1.17.3",
+    "ejs": "^3.1.9",
+    "moment": "^2.29.4",
+    "canvas": "^2.11.2",
+    "chart.js": "^4.4.0",
+    "html-pdf": "^3.0.1",
+    "axios": "^1.6.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "eslint": "^8.55.0",
+    "jest": "^29.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
