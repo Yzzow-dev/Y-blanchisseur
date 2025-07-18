@@ -1,189 +1,261 @@
-# Discord RP Bot - Bot de gestion pour serveur RP
+# 🛡️ Système d'Administration FiveM - Ultra Moderne & Sécurisé
 
-Un bot Discord avancé conçu spécialement pour les serveurs de roleplay, avec système de tickets, candidatures, auto-modération et dashboard web.
+Un système d'administration complet, moderne et sécurisé pour serveurs FiveM avec interface NUI élégante en bleu, logs Discord stylisés et protections anti-cheat avancées.
 
-## 🚀 Fonctionnalités
+## ✨ Fonctionnalités
 
-### ✅ Implémentées
-- **Système d'accueil automatique** avec captcha et attribution de rôles
-- **Système de tickets complet** avec transcription et sauvegarde
-- **Candidatures staff/whitelist** avec validation
-- **Auto-modération** avancée avec logs
-- **Configuration via Discord** avec slash commands
-- **Système de logs** professionnel avec Winston
+### 🎛️ Interface Moderne
+- **Design ultra-moderne** en bleu foncé/clair avec animations fluides
+- **Sidebar interactive** avec icônes et navigation intuitive
+- **Responsive design** compatible 1920x1080 et 1366x768
+- **Notifications toast** stylisées avec animations
+- **Thème sombre** optimisé pour les longues sessions
 
-### 🔄 En développement
-- Planification d'annonces avec cron
-- Statistiques serveur en temps réel
-- Dashboard web avec OAuth2 Discord
-- Graphiques et analytics
+### 👥 Gestion des Joueurs
+- **Recherche multi-critères** (ID, nom, Steam, licence, IP)
+- **Fiches joueurs complètes** (argent, banque, métier, position, ping)
+- **Actions rapides** : freeze, spectate, revive, heal, téléportation
+- **Sanctions avancées** : warn, kick, ban temporaire/permanent
+- **Gestion économique** : donner argent, changer métier
 
-## 📦 Installation
+### 📝 Système de Reports
+- **Notifications temps réel** pour nouveaux reports
+- **Interface de gestion** intuitive avec filtres
+- **Historique complet** des reports traités
+- **Système de réponses** aux joueurs
+
+### 🛠️ Outils Staff
+- **Mode invisible** (cloak) avec godmode
+- **Noclip avancé** avec vitesses multiples
+- **Système de spectate** avec informations détaillées
+- **Téléportation** vers lieux populaires ou coordonnées
+- **Blips joueurs** en temps réel
+
+### 🔐 Sécurité Avancée
+- **Vérifications permissions** côté serveur uniquement
+- **Rate limiting** pour éviter le spam d'actions
+- **Anti-spoof** avec vérification identifiants
+- **Détection activités suspectes** automatique
+- **Logs complets** de toutes les actions
+
+### 📊 Statistiques & Monitoring
+- **Dashboard temps réel** avec métriques serveur
+- **Statistiques détaillées** (connexions, actions, sanctions)
+- **Monitoring uptime** et performances
+- **Graphiques d'activité** (à implémenter)
+
+### 📨 Logs Discord Stylisés
+- **Embeds colorés** style Farming Creator
+- **Logs automatiques** pour toutes les actions importantes
+- **Webhooks séparés** pour admin et sécurité
+- **Informations détaillées** avec timestamps
+
+## 🚀 Installation
 
 ### Prérequis
-- Node.js 18.0.0 ou supérieur
-- MongoDB (local ou Atlas)
-- Un bot Discord créé sur le Discord Developer Portal
+- **ESX Framework** (testé avec ESX Legacy)
+- **MySQL** pour la base de données
+- **Serveur FiveM** avec accès aux ressources
 
-### 1. Cloner et installer
-```bash
-git clone <votre-repo>
-cd discord-rp-bot
-npm install
+### Étapes d'installation
+
+1. **Téléchargement**
+   ```bash
+   git clone https://github.com/votre-repo/admin-system.git
+   cd admin-system
+   ```
+
+2. **Configuration Discord**
+   - Créer des webhooks Discord pour les logs
+   - Modifier `config.lua` avec vos webhooks :
+   ```lua
+   Config.Discord = {
+       AdminWebhook = 'https://discord.com/api/webhooks/VOTRE_WEBHOOK_ADMIN',
+       SecurityWebhook = 'https://discord.com/api/webhooks/VOTRE_WEBHOOK_SECURITY',
+       ServerName = 'Votre Serveur RP',
+       ServerIcon = 'https://votre-logo.png'
+   }
+   ```
+
+3. **Base de données**
+   - Les tables sont créées automatiquement au démarrage
+   - Vérifier que MySQL est configuré dans votre serveur
+
+4. **Permissions ESX**
+   - Ajouter les groupes admin dans votre base ESX :
+   ```sql
+   INSERT INTO addon_account_data (account_name, money, owner) VALUES ('bank', 0, 'society_admin');
+   ```
+
+5. **Installation sur le serveur**
+   - Copier le dossier dans `resources/[admin]/`
+   - Ajouter dans `server.cfg` :
+   ```
+   ensure admin-system
+   ```
+
+6. **Configuration des groupes**
+   - Modifier `config.lua` selon vos besoins :
+   ```lua
+   Config.Groups = {
+       ['owner'] = { level = 100, permissions = {'all'} },
+       ['admin'] = { level = 80, permissions = {'player.manage', 'player.ban'} },
+       ['mod'] = { level = 50, permissions = {'player.freeze', 'player.spectate'} }
+   }
+   ```
+
+## 🎮 Utilisation
+
+### Commandes
+- `/admin` - Ouvrir le panel d'administration
+- `/report <raison>` - Créer un report
+- `/noclip` - Toggle noclip (si permissions)
+- `/cloak` - Toggle mode invisible (si permissions)
+
+### Raccourcis clavier
+- **F6** - Ouvrir/fermer le panel admin
+- **ESCAPE** - Fermer le panel
+- **WASD** - Déplacement en noclip
+- **SHIFT** - Vitesse rapide en noclip
+- **ALT** - Super vitesse en noclip
+
+### Interface
+1. **Sidebar** - Navigation entre les différents modules
+2. **Dashboard** - Vue d'ensemble du serveur
+3. **Joueurs** - Gestion complète des joueurs connectés
+4. **Reports** - Traitement des signalements
+5. **Sanctions** - Historique et gestion des bans/warns
+6. **Outils** - Outils staff (noclip, cloak, téléportation)
+7. **Serveur** - Contrôle serveur (restart, annonces)
+8. **Logs** - Historique des actions
+9. **Stats** - Statistiques détaillées
+
+## 🔧 Configuration
+
+### Permissions personnalisées
+Modifier `config.lua` pour ajuster les permissions :
+
+```lua
+Config.Actions = {
+    ['freeze'] = { permission = 'player.freeze', log = true },
+    ['ban'] = { permission = 'player.ban', log = true },
+    ['restart'] = { permission = 'server.restart', log = true }
+}
 ```
 
-### 2. Configuration
-```bash
-cp .env.example .env
-# Éditer le fichier .env avec vos informations
+### Sécurité
+Ajuster les paramètres de sécurité dans `config.lua` :
+
+```lua
+Config.Security = {
+    EnableRateLimit = true,
+    RateLimitDelay = 1000,
+    MaxActionsPerMinute = 30,
+    EnableAntiSpoof = true,
+    AutoKickOnCheat = true
+}
 ```
 
-### 3. Créer un bot Discord
-1. Allez sur https://discord.com/developers/applications
-2. Créez une nouvelle application
-3. Allez dans "Bot" et créez un bot
-4. Copiez le token dans votre `.env`
-5. Activez les "Privileged Gateway Intents" (SERVER MEMBERS INTENT et MESSAGE CONTENT INTENT)
+### Interface
+Personnaliser l'apparence dans `config.lua` :
 
-### 4. Inviter le bot
-Utilisez ce lien en remplaçant `CLIENT_ID` par l'ID de votre application :
-```
-https://discord.com/api/oauth2/authorize?client_id=CLIENT_ID&permissions=8&scope=bot%20applications.commands
-```
-
-### 5. Lancer le bot
-```bash
-# Mode développement
-npm run dev
-
-# Mode production
-npm start
+```lua
+Config.UI = {
+    OpenKey = 'F6',
+    DefaultTheme = 'dark',
+    AnimationSpeed = 300,
+    NotificationDuration = 5000
+}
 ```
 
-## 🛠️ Configuration
-
-### Commandes de configuration (réservées aux administrateurs)
-
-#### `/config setup`
-Configuration initiale du serveur avec menus interactifs.
-
-#### `/config logs <salon>`
-Définit le salon pour les logs de modération.
-
-#### `/config welcome <salon> [message]`
-Configure le système d'accueil.
-
-#### `/config tickets <salon>`
-Définit le salon pour créer les tickets.
-
-#### `/config roles`
-Configuration des rôles automatiques.
-
-## 📋 Utilisation
-
-### Système de tickets
-- `/ticket create` - Créer un ticket
-- `/ticket close` - Fermer un ticket
-- `/ticket transcript` - Générer une transcription
-
-### Candidatures
-- `/candidature staff` - Postuler pour le staff
-- `/candidature whitelist` - Demander la whitelist RP
-- `/candidature review <id>` - Examiner une candidature (staff)
-
-### Modération
-- `/warn <utilisateur> [raison]` - Avertir un utilisateur
-- `/mute <utilisateur> [durée] [raison]` - Rendre muet
-- `/ban <utilisateur> [raison]` - Bannir
-- `/unban <utilisateur>` - Débannir
-- `/clear <nombre>` - Supprimer des messages
-
-### Utilitaires
-- `/userinfo <utilisateur>` - Informations sur un utilisateur
-- `/serverinfo` - Informations sur le serveur
-- `/help` - Aide et commandes disponibles
-
-## 🏗️ Structure du projet
+## 📋 Structure des fichiers
 
 ```
-discord-rp-bot/
-├── src/
-│   ├── commands/           # Commandes slash
-│   │   ├── admin/         # Commandes administrateur
-│   │   ├── moderation/    # Commandes de modération
-│   │   ├── tickets/       # Système de tickets
-│   │   └── utils/         # Utilitaires
-│   ├── events/            # Événements Discord
-│   ├── handlers/          # Gestionnaires (commandes, événements)
-│   ├── models/            # Modèles MongoDB
-│   ├── utils/             # Utilitaires et helpers
-│   ├── config/            # Configuration
-│   ├── dashboard/         # Dashboard web (optionnel)
-│   └── index.js           # Point d'entrée
-├── logs/                  # Fichiers de logs
-├── .env.example           # Variables d'environnement
-├── package.json
-└── README.md
+admin-system/
+├── fxmanifest.lua          # Manifest FiveM
+├── config.lua              # Configuration principale
+├── permissions.lua         # Système de permissions
+├── server.lua             # Logique serveur
+├── client.lua             # Logique client
+├── logger.lua             # Système de logs Discord
+├── nui.js                 # Interface NUI (client)
+├── html/
+│   ├── index.html         # Interface HTML
+│   ├── style.css          # Styles CSS modernes
+│   └── script.js          # JavaScript interface
+└── README.md              # Documentation
 ```
 
-## 🔧 Développement
+## 🛡️ Sécurité
 
-### Linting
-```bash
-npm run lint        # Vérifier le code
-npm run lint:fix    # Corriger automatiquement
+### Protections implémentées
+- ✅ **Vérification permissions** côté serveur
+- ✅ **Rate limiting** anti-spam
+- ✅ **Anti-spoof** identifiants
+- ✅ **Validation données** côté serveur
+- ✅ **Logs complets** toutes actions
+- ✅ **Détection activités suspectes**
+
+### Bonnes pratiques
+- Toutes les actions critiques sont vérifiées côté serveur
+- Aucune donnée sensible n'est envoyée au client
+- Les permissions sont vérifiées à chaque action
+- Les logs permettent un audit complet
+
+## 🎨 Personnalisation
+
+### Thèmes
+Le système utilise des variables CSS pour faciliter la personnalisation :
+
+```css
+:root {
+    --primary-color: #2563eb;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+}
 ```
 
-### Tests
-```bash
-npm test
+### Ajout de fonctionnalités
+1. Ajouter l'action dans `config.lua`
+2. Implémenter la logique dans `server.lua`
+3. Ajouter l'interface dans `html/script.js`
+
+## 📞 Support
+
+### Problèmes courants
+- **Panel ne s'ouvre pas** : Vérifier les permissions ESX
+- **Logs Discord non envoyés** : Vérifier les webhooks
+- **Erreurs console** : Vérifier la configuration MySQL
+
+### Debug
+Activer le mode debug dans `config.lua` :
+```lua
+Config.Debug = true
 ```
-
-## 🚀 Déploiement
-
-### VPS/Serveur dédié
-1. Cloner le projet sur votre serveur
-2. Installer les dépendances
-3. Configurer les variables d'environnement
-4. Utiliser PM2 pour la gestion des processus :
-```bash
-npm install -g pm2
-pm2 start src/index.js --name "discord-rp-bot"
-pm2 startup
-pm2 save
-```
-
-### Railway
-1. Connecter votre repository GitHub à Railway
-2. Ajouter les variables d'environnement dans le dashboard Railway
-3. Le déploiement se fait automatiquement
-
-### Docker (optionnel)
-```bash
-# Construire l'image
-docker build -t discord-rp-bot .
-
-# Lancer le conteneur
-docker run -d --name discord-rp-bot --env-file .env discord-rp-bot
-```
-
-## 🤝 Contribution
-
-Les contributions sont les bienvenues ! N'hésitez pas à :
-- Ouvrir des issues pour signaler des bugs
-- Proposer de nouvelles fonctionnalités
-- Soumettre des pull requests
 
 ## 📄 Licence
 
 Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
-## 🆘 Support
+## 🤝 Contribution
 
-Pour toute question ou problème :
-- Ouvrez une issue sur GitHub
-- Contactez-nous sur Discord : [Lien vers votre serveur de support]
+Les contributions sont les bienvenues ! N'hésitez pas à :
+- Signaler des bugs
+- Proposer des améliorations
+- Soumettre des pull requests
+
+## 🔄 Mises à jour
+
+### Version 1.0.0
+- ✅ Interface moderne complète
+- ✅ Système de permissions avancé
+- ✅ Logs Discord stylisés
+- ✅ Protections anti-cheat
+- ✅ Gestion complète des joueurs
+- ✅ Système de reports
+- ✅ Outils staff complets
 
 ---
 
-**Note :** Ce bot est conçu spécifiquement pour les serveurs de roleplay. Adaptez la configuration selon vos besoins spécifiques.
+**Développé avec ❤️ pour la communauté FiveM**

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Système d'Administration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Panel d'administration principal -->
+    <div id="adminPanel" class="admin-panel">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <h2>Admin Panel</h2>
+                </div>
+                <div class="staff-info">
+                    <div class="staff-avatar">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="staff-details">
+                        <h4 id="staffName">Nom du Staff</h4>
+                        <span id="staffGroup" class="staff-group">admin</span>
+                        <span id="staffLevel" class="staff-level">Niveau 80</span>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav" id="sidebar">
+                <!-- Les onglets seront générés dynamiquement -->
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="btn btn-danger btn-block" onclick="closePanel()">
+                    <i class="fas fa-times"></i> Fermer
+                </button>
+            </div>
+        </div>
+        
+        <!-- Contenu principal -->
+        <div class="main-content">
+            <div class="content-wrapper">
+                <div id="content" class="content">
+                    <!-- Le contenu sera généré dynamiquement -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modals -->
+    <div id="playerActionsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-cog"></i> Actions Joueur</h3>
+                <button class="modal-close" onclick="closeModal('playerActionsModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="player-modal-info">
+                    <h4 id="modalPlayerName">Nom du joueur</h4>
+                    <span id="modalPlayerId">ID: 1</span>
+                </div>
+                
+                <div class="action-groups">
+                    <div class="action-group">
+                        <h5><i class="fas fa-user"></i> Actions Joueur</h5>
+                        <div class="action-buttons">
+                            <button class="btn btn-warning" onclick="playerAction('freeze')">
+                                <i class="fas fa-snowflake"></i> Freeze
+                            </button>
+                            <button class="btn btn-success" onclick="playerAction('revive')">
+                                <i class="fas fa-heart"></i> Revive
+                            </button>
+                            <button class="btn btn-info" onclick="playerAction('heal')">
+                                <i class="fas fa-plus"></i> Heal
+                            </button>
+                            <button class="btn btn-primary" onclick="playerAction('spectate')">
+                                <i class="fas fa-eye"></i> Spectate
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="action-group">
+                        <h5><i class="fas fa-location-arrow"></i> Téléportation</h5>
+                        <div class="action-buttons">
+                            <button class="btn btn-success" onclick="playerAction('goto')">
+                                <i class="fas fa-location-arrow"></i> Aller vers
+                            </button>
+                            <button class="btn btn-primary" onclick="playerAction('bring')">
+                                <i class="fas fa-hand-paper"></i> Amener
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="action-group">
+                        <h5><i class="fas fa-gavel"></i> Sanctions</h5>
+                        <div class="action-buttons">
+                            <button class="btn btn-warning" onclick="showWarnModal()">
+                                <i class="fas fa-exclamation-triangle"></i> Warn
+                            </button>
+                            <button class="btn btn-danger" onclick="showKickModal()">
+                                <i class="fas fa-sign-out-alt"></i> Kick
+                            </button>
+                            <button class="btn btn-danger" onclick="showBanModal()">
+                                <i class="fas fa-ban"></i> Ban
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="action-group">
+                        <h5><i class="fas fa-money-bill-wave"></i> Économie</h5>
+                        <div class="action-buttons">
+                            <button class="btn btn-success" onclick="showGiveMoneyModal()">
+                                <i class="fas fa-dollar-sign"></i> Donner Argent
+                            </button>
+                            <button class="btn btn-info" onclick="showSetJobModal()">
+                                <i class="fas fa-briefcase"></i> Changer Métier
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de sanction -->
+    <div id="sanctionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="sanctionModalTitle"><i class="fas fa-gavel"></i> Sanction</h3>
+                <button class="modal-close" onclick="closeModal('sanctionModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="sanctionForm">
+                    <div class="form-group">
+                        <label for="sanctionReason">Raison:</label>
+                        <textarea id="sanctionReason" class="form-control" rows="3" placeholder="Raison de la sanction..."></textarea>
+                    </div>
+                    <div class="form-group" id="durationGroup" style="display: none;">
+                        <label for="sanctionDuration">Durée (heures):</label>
+                        <input type="number" id="sanctionDuration" class="form-control" min="1" max="8760" placeholder="24">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('sanctionModal')">Annuler</button>
+                        <button type="submit" class="btn btn-danger" id="sanctionSubmit">Appliquer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de don d'argent -->
+    <div id="moneyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-dollar-sign"></i> Donner de l'argent</h3>
+                <button class="modal-close" onclick="closeModal('moneyModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="moneyForm">
+                    <div class="form-group">
+                        <label for="moneyAmount">Montant:</label>
+                        <input type="number" id="moneyAmount" class="form-control" min="1" max="1000000" placeholder="10000">
+                    </div>
+                    <div class="form-group">
+                        <label for="moneyType">Type:</label>
+                        <select id="moneyType" class="form-control">
+                            <option value="cash">Argent liquide</option>
+                            <option value="bank">Banque</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('moneyModal')">Annuler</button>
+                        <button type="submit" class="btn btn-success">Donner</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de changement de métier -->
+    <div id="jobModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-briefcase"></i> Changer le métier</h3>
+                <button class="modal-close" onclick="closeModal('jobModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="jobForm">
+                    <div class="form-group">
+                        <label for="jobName">Métier:</label>
+                        <select id="jobName" class="form-control">
+                            <option value="unemployed">Chômeur</option>
+                            <option value="police">Police</option>
+                            <option value="ambulance">Ambulancier</option>
+                            <option value="mechanic">Mécanicien</option>
+                            <option value="taxi">Taxi</option>
+                            <option value="reporter">Journaliste</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="jobGrade">Grade:</label>
+                        <input type="number" id="jobGrade" class="form-control" min="0" max="10" value="0">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('jobModal')">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Changer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de téléportation -->
+    <div id="teleportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-location-arrow"></i> Téléportation</h3>
+                <button class="modal-close" onclick="closeModal('teleportModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="teleport-options">
+                    <div class="teleport-section">
+                        <h4><i class="fas fa-map-marker-alt"></i> Lieux populaires</h4>
+                        <div class="teleport-buttons">
+                            <button class="btn btn-primary" onclick="teleportTo(-1037.17, -2737.74, 20.17)">
+                                <i class="fas fa-plane"></i> Aéroport
+                            </button>
+                            <button class="btn btn-primary" onclick="teleportTo(425.13, -979.55, 30.71)">
+                                <i class="fas fa-shield-alt"></i> Commissariat
+                            </button>
+                            <button class="btn btn-primary" onclick="teleportTo(298.75, -584.20, 43.26)">
+                                <i class="fas fa-hospital"></i> Hôpital
+                            </button>
+                            <button class="btn btn-primary" onclick="teleportTo(215.25, -810.05, 30.73)">
+                                <i class="fas fa-car"></i> Garage Central
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="teleport-section">
+                        <h4><i class="fas fa-crosshairs"></i> Coordonnées personnalisées</h4>
+                        <form id="teleportForm">
+                            <div class="coords-input">
+                                <input type="number" id="coordX" class="form-control" placeholder="X" step="0.01">
+                                <input type="number" id="coordY" class="form-control" placeholder="Y" step="0.01">
+                                <input type="number" id="coordZ" class="form-control" placeholder="Z" step="0.01">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-location-arrow"></i> Aller
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Overlay pour les modals -->
+    <div id="modalOverlay" class="modal-overlay"></div>
+    
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
